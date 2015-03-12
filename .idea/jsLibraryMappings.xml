@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$/public/index.html" libraries="{angular, angular-ui-router}" />
+    <file url="file://$PROJECT_DIR$/public/javascripts/app.js" libraries="{angular}" />
+    <file url="file://$PROJECT_DIR$/public/services/authentication.js" libraries="{angular, angular-local-storage}" />
+    <file url="PROJECT" libraries="{Node.js v0.12.0 Core Modules}" />
+    <includedPredefinedLibrary name="Node.js Globals" />
+  </component>
+</project>

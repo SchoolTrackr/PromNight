@@ -1,0 +1,17 @@
+{
+  "name": "PromNight",
+  "version": "1.0.0",
+  "description": "Prom ticket management system",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Chandler Willoughby",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.12.2",
+    "mongoose": "^3.8.24",
+    "restify": "^2.9.0"
+  }
+}
