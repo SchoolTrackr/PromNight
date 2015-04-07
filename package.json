@@ -10,7 +10,10 @@
   "author": "Chandler Willoughby",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^0.8.1",
     "express": "^4.12.2",
+    "jwt-simple": "^0.2.0",
+    "moment": "^2.9.0",
     "mongoose": "^3.8.24",
     "restify": "^2.9.0"
   }

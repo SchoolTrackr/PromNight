@@ -10,10 +10,12 @@ var studentSchema = mongoose.Schema({
         last: { type: String }
     },
     grade: { type: Number, required: true},
+    email: { type: String },
     modified: { type: Date, default: Date.now },
     ticket: { type: Schema.Types.ObjectId, ref: 'Ticket' },
     hasTicket: { type: Boolean, default: false },
-    isOutside: { type: Boolean, default: false }
+    isOutside: { type: Boolean, default: false },
+    hasCheckedIn: { type: Boolean, default: false }
 });
 
 studentSchema.pre('save', function(next, done) {

@@ -7,7 +7,22 @@
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading">Recently Bought Tickets</div>
-            <div class="panel-body">Swag Swag</div>
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Price</th>
+                    <th>Bought</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="ticket in recentTickets">
+                    <td>{{ticket.student.name.full}}</td>
+                    <td>{{ticket.price}}</td>
+                    <td>{{ticket.bought}}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="cl-md-6">

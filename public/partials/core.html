@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" ng-controller="coreController">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -15,7 +15,7 @@
                 <li><a ui-sref="core.checkIn">Check In</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <p class="navbar-text">Signed in as {{session.user.name.first}}</p>
+                <p class="navbar-text">Signed in as {{Session.user.name.first}}</p>
             </ul>
         </div>
     </div>
