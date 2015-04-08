@@ -4,6 +4,38 @@
 var Ticket = require('../models/ticket.js');
 var Student = require('../models/student.js');
 
+var ticketConfirmationEmail = function(studentID, ticketID) {
+    var Student = {};
+    var Ticket = {};
+    Student.findById(studentID, function(err, student){
+        if (err) return err;
+        Student = student;
+        Ticket.findById(ticketID, function(err, ticket){
+            if (err) return err;
+            Ticket = ticket;
+        })
+    });
+    var sendEmail = function(student, ticket) {
+        mandrill('/messages/send', {
+            message: {
+                to: [{email: student.email, name: student.name.full}],
+                from: 'prom@schooltrackr.net',
+                subject: "Your Wakefield 2015 Prom Ticket",
+                text: "Hello, I sent this message using mandrill."
+            }
+        }, function(error, response)
+        {
+            //uh oh, there was an error
+            if (error) console.log( JSON.stringify(error) );
+
+            //everything's good, lets see what mandrill said
+            else console.log(response);
+        });
+    }
+}
+
+
+
 var createTicket = function(req, res, next) {
     ticket = new Ticket(req.body);
     if (ticket.associated) {
@@ -40,6 +72,7 @@ function readAllTickets(req, res, next) {
     if (req.query.student) query.where({ student: req.query.student});
     if (req.query.associated) query.where({ associated: req.query.associated});
     if (req.query.price) query.where({ price: req.query.price});
+    if (req.query.number) query.where({ number: req.query.number});
     if (req.query.sort) {
         query.sort(req.query.sort)
     } else {
@@ -65,6 +98,19 @@ function readAllTickets(req, res, next) {
     }
 }
 
+function deleteTicket(req, res, next) {
+    Ticket.findById(req.params.id, function(err, ticket){
+        return ticket.remove(function(err, success) {
+            if (success) {
+                res.send(204);
+                return next()
+            } else {
+                return next(err)
+            }
+        })
+    })
+}
+
 function checkIn(req, res, next) {
     Ticket.findById(req.params.id, function(err, ticket){
         if (err) {
@@ -80,6 +126,7 @@ PATH = '/api/tickets';
 
 module.exports = function(server) {
     server.post({path: PATH, version: '1.0.0.'}, createTicket);
+    server.del({path: PATH + '/:id', version: '1.0.0'}, deleteTicket);
     server.get({path: PATH + '/:id', version: '1.0.0'}, readOneTicket);
     server.get({path: PATH, version: '1.0.0'}, readAllTickets);
 
