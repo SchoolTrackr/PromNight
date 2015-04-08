@@ -1,7 +1,7 @@
 /**
  * Created by chandler on 3/11/15.
  */
-var promNight = angular.module('PromNight', ['ui.router', 'promNight.authentication', 'mgcrea.ngStrap', 'ui.bootstrap', 'oitozero.ngSweetAlert']);
+var promNight = angular.module('PromNight', ['ui.router', 'promNight.authentication', 'mgcrea.ngStrap', 'ui.bootstrap', 'oitozero.ngSweetAlert', 'angularMoment']);
 //var APIroot = 'https://promnight.schooltrackr.net/api';
 var APIroot = 'http://prom.schooltrackr.net/api';
 promNight.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -183,13 +183,41 @@ promNight.controller('checkInController', function($scope) {
 promNight.controller('ticketsController', function($scope, $http, Session, SweetAlert) {
     $scope.tickets = {};
     $scope.getTickets = function() {
-        return $http.get(APIroot+'/tickets'+'?access_token='+Session.token+'&limit=2000').then(function(res) {
+        return $http.get(APIroot+'/tickets'+'?access_token='+Session.token+'&limit=2000&sort=-number').then(function(res) {
             $scope.tickets = res.data;
             return res.data
         })
     };
     $scope.getTickets();
-})
+    $scope.deleteTicket = function(ticket) {
+        SweetAlert.swal({
+                title: "Are you sure?",
+                text: "You're about to delete the ticket for "+ticket.student.name.full,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Delete the ticket!",
+                confirmButtonColor: "#DD6B55",
+                cancelButtonText: "No, This is incorrect",
+                closeOnConfirm: false,
+                closeOnCancel: false },
+            function(isConfirm){
+                if (isConfirm) {
+                    $http.delete(APIroot + '/tickets/'+ticket._id).success(function (res) {
+                        SweetAlert.swal("Success", "The ticket has been deleted", "success");
+                        $scope.getTickets();
+                        console.log(res)
+                    }).error(function (res) {
+                        SweetAlert.swal("Uh Oh", "Something went wrong when trying to delete this ticket", "error");
+                        $scope.getTickets();
+                        console.warn(res)
+                    });
+                } else {
+                    SweetAlert.swal("Cancelled", "No ticket was deleted", "error");
+                }
+            });
+
+    }
+});
 
 promNight.run(function(AuthService, $state, $timeout){
     console.group('Running application checks');

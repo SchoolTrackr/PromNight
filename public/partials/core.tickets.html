@@ -20,7 +20,11 @@
                         <td>{{ticket.number}}</td>
                         <td>{{ticket.student.name.full}}</td>
                         <td>{{ticket.price}}</td>
-                        <td>{{ticket.bought}}</td>
+                        <td>{{ticket.bought | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'}}</td>
+                        <td>
+                            <button type="button" class="btn btn-info btn-xs">Edit</button>
+                            <button type="button" class="btn btn-danger btn-xs" ng-click="deleteTicket(ticket)">Delete</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

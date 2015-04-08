@@ -19,7 +19,7 @@
                 <tr ng-repeat="ticket in recentTickets">
                     <td>{{ticket.student.name.full}}</td>
                     <td>{{ticket.price}}</td>
-                    <td>{{ticket.bought}}</td>
+                    <td>{{ticket.bought | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'}}</td>
                 </tr>
                 </tbody>
             </table>
