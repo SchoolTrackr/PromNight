@@ -1,0 +1,30 @@
+<div class="container" ng-controller="ticketsController">
+    <div class="page-header">
+        <h1>Current Tickets <small>Wakefield Highschool Prom 2015</small></h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Current Tickets</div>
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th>Ticket Number</th>
+                        <th>Student</th>
+                        <th>Price</th>
+                        <th>Bought</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="ticket in tickets">
+                        <td>{{ticket.number}}</td>
+                        <td>{{ticket.student.name.full}}</td>
+                        <td>{{ticket.price}}</td>
+                        <td>{{ticket.bought}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

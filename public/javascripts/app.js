@@ -3,7 +3,7 @@
  */
 var promNight = angular.module('PromNight', ['ui.router', 'promNight.authentication', 'mgcrea.ngStrap', 'ui.bootstrap', 'oitozero.ngSweetAlert']);
 //var APIroot = 'https://promnight.schooltrackr.net/api';
-var APIroot = 'http://127.0.0.1:8000/api';
+var APIroot = 'http://prom.schooltrackr.net/api';
 promNight.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise("/");
@@ -27,6 +27,10 @@ promNight.config(function($stateProvider, $urlRouterProvider, $locationProvider)
         .state('core.checkIn', {
             url: "/checkIn",
             templateUrl: "partials/core.checkIn.html"
+        })
+        .state('core.tickets', {
+            url: "/tickets",
+            templateUrl: "partials/core.tickets.html"
         });
 
 
@@ -52,7 +56,7 @@ promNight.controller('dashboardController', function($scope, Session, $http) {
     };
     $scope.getStudentById = function(id) {
         return $http.get(APIroot+'/students/'+id+'?access_token='+Session.token).then(function(res) {
-            console.log(res.data)
+            console.log(res.data);
             return res.data
         })
     };
@@ -111,14 +115,14 @@ promNight.controller('addTicketController', function($scope, Session, $http, Swe
                         $scope.addTicketForm.student = '';
                         $scope.addTicketForm.associated = '';
                         $scope.addTicketForm.email = '';
-                        $scope.addTicketForm.number = '';
+                        $scope.addTicketForm.ticketNumber = '';
                         console.log(res)
                     }).error(function (res) {
                         SweetAlert.swal("Uh Oh", "Something went wrong when trying to make this ticket", "error");
                         $scope.addTicketForm.student = '';
                         $scope.addTicketForm.associated = '';
                         $scope.addTicketForm.email = '';
-                        $scope.addTicketForm.number = '';
+                        $scope.addTicketForm.ticketNumber = '';
                         console.warn(res)
                     });
                 } else {
@@ -175,6 +179,17 @@ promNight.controller('checkInController', function($scope) {
         })
     }
 });
+
+promNight.controller('ticketsController', function($scope, $http, Session, SweetAlert) {
+    $scope.tickets = {};
+    $scope.getTickets = function() {
+        return $http.get(APIroot+'/tickets'+'?access_token='+Session.token+'&limit=2000').then(function(res) {
+            $scope.tickets = res.data;
+            return res.data
+        })
+    };
+    $scope.getTickets();
+})
 
 promNight.run(function(AuthService, $state, $timeout){
     console.group('Running application checks');
