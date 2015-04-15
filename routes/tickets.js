@@ -91,7 +91,7 @@ function readAllTickets(req, res, next) {
             res.send(200, resultCount);
         });
     } else {
-        query.populate('student').exec(function(err, students) {
+        query.populate('student', 'associated').exec(function(err, students) {
             if (err) return next(err);
             res.send(students)
         });
