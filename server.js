@@ -8,11 +8,17 @@ var server = restify.createServer({
 });
 var mongoose = require('mongoose');
 var authLib = require('./libs/authLib.js');
+var config  = require('./config.json');
 
 server.listen(8000, function() {
     console.log('PromNight API is now running')
 });
-var databaseURL = process.env.databaseURL;
+var databaseURL = '';
+if (config.database.url) {
+    databaseURL = config.database.url
+} else {
+    databaseURL = process.env.databaseURL
+}
 
 mongoose.connect(databaseURL, function(err) {
     if (err) console.log('Error connecting to MongoDB: ' + err); else console.log('Successfully connected to MongoDB')

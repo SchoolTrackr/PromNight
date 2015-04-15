@@ -1,8 +1,14 @@
 var moment = require('moment');
 var User = require('../models/user.js');
 var jwt  = require('jwt-simple');
+var config = require('../config.json');
 
-var secret = process.env.Secret;
+var secret = '';
+if (config.secrets.jwtSecret) {
+    secret = config.secrets.jwtSecret
+} else {
+    secret = process.env.SECRET
+}
 
 var exports = module.exports = {};
 
