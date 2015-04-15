@@ -39,7 +39,7 @@ var ticketConfirmationEmail = function(studentID, ticketID) {
 var createTicket = function(req, res, next) {
     ticket = new Ticket(req.body);
     if (ticket.associated) {
-        console.log('Found a ticket with an associated student, linking other student...')
+        console.log('Found a ticket with an associated student, linking other student...');
         var query = Ticket.findOne();
         query.where({student: ticket.associated});
         query.exec(function(err, targetTicket) {

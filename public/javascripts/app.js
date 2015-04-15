@@ -1,7 +1,7 @@
 /**
  * Created by chandler on 3/11/15.
  */
-var promNight = angular.module('PromNight', ['ui.router', 'promNight.authentication', 'mgcrea.ngStrap', 'ui.bootstrap', 'oitozero.ngSweetAlert', 'angularMoment']);
+var promNight = angular.module('PromNight', ['ui.router', 'promNight.authentication', 'ui.bootstrap', 'oitozero.ngSweetAlert', 'angularMoment']);
 //var APIroot = 'https://promnight.schooltrackr.net/api';
 var APIroot = 'http://prom.schooltrackr.net/api';
 promNight.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
@@ -92,7 +92,7 @@ promNight.controller('addTicketController', function($scope, Session, $http, Swe
         } else {
             request = {
                 student: form.student._id,
-                price: form.price,
+                price: form.ticketPrice,
                 number: form.ticketNumber
             }
         }
@@ -180,7 +180,7 @@ promNight.controller('checkInController', function($scope) {
     }
 });
 
-promNight.controller('ticketsController', function($scope, $http, Session, SweetAlert) {
+promNight.controller('ticketsController', function($scope, $http, Session, SweetAlert, $modal) {
     $scope.tickets = {};
     $scope.getTickets = function() {
         return $http.get(APIroot+'/tickets'+'?access_token='+Session.token+'&limit=2000&sort=-number').then(function(res) {
@@ -216,7 +216,40 @@ promNight.controller('ticketsController', function($scope, $http, Session, Sweet
                 }
             });
 
+    };
+    $scope.editTicket = function(ticket) {
+        console.log(ticket);
+        var editTicketModal = $modal.open({
+            templateUrl: 'editTicketModal.html',
+            controller: 'editTicketController',
+            resolve: {
+                ticket: function() {
+                    return ticket
+                }
+            }
+        });
+        editTicketModal.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+        }, function () {
+            console.info('Modal dismissed at: ' + new Date());
+        });
     }
+});
+
+promNight.controller('editTicketController', function($scope, $http, Session, ticket, $editTicketModal) {
+    $scope.ticket = ticket;
+    $scope.getStudent = function(name, ticket) {
+        return $http.jsonp(APIroot+'/students?callback=JSON_CALLBACK&access_token='+Session.token+'&name='+name+'&hasTicket='+ticket).then(function(res) {
+            return res.data
+        })
+    };
+    $scope.save = function () {
+        $editTicketModal.close();
+    };
+
+    $scope.cancel = function () {
+        $editTicketModal.dismiss();
+    };
 });
 
 promNight.run(function(AuthService, $state, $timeout){
