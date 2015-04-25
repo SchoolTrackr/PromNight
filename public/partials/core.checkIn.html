@@ -3,10 +3,34 @@
         <h1>Check into Event <small>Wakefield Highschool Prom 2015</small></h1>
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-6">
             <div class="well">
-
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="student" class="col-sm-4 control-label">What's Your Name?</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="student" ng-model="checkInForm.student" typeahead="student as student.name.full for student in getStudent($viewValue)" typeahead-on-select="findTickets($item)" placeholder="My Name">
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" ng-repeat="ticket in checkInQueue">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ticket.student.name.full}} <span ng-if="ticket.student.isOutside" class="label label-warning">Outside</span>
+                    </h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">Bought: {{ticket.bought | amDateFormat:'dddd, MMMM Do YYYY, h:mm a'}}</li>
+                    <li class="list-group-item">Price: ${{ticket.price}}</li>
+                    <li class="list-group-item">Number: {{ticket.number}}</li>
+                </ul>
+                <div class="panel-footer"><button type="button" class="btn btn-success" ng-click="checkIn(ticket.student, $index)">Check In</button></div>
+            </div>
+        </div>
+
     </div>
 </div>

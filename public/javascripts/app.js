@@ -170,12 +170,58 @@ promNight.controller('addTicketController', function($scope, Session, $http, Swe
     };
 });
 
-promNight.controller('checkInController', function($scope) {
-    $scope.checkIn = function(id) {
-        $http.get(APIroot+'/tickets/'+id+'checkIn').success(function() {
-            console.info('Successfully checked in ticket')
-        }).error(function() {
-            console.warn('There was an error while checking in this ticket')
+promNight.controller('checkInController', function($scope, $http, Session, SweetAlert) {
+    $scope.checkInForm = {};
+    $scope.checkInQueue = [];
+    $scope.checkIn = function(student, index) {
+        SweetAlert.swal({
+                title: "Are you sure?",
+                text: "You're about to check in "+student.name.full,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, they're here!",
+                cancelButtonText: "No, This is incorrect",
+                closeOnConfirm: false,
+                closeOnCancel: false },
+            function(isConfirm){
+                if (isConfirm) {
+                    $http.get(APIroot+'/tickets/'+student.ticket+'/checkIn').success(function() {
+                        SweetAlert.swal("Awesome!", "This student has been checked in", "success");
+                        console.info('Successfully checked in ticket');
+                        $scope.checkInQueue.splice(index, 1);
+                    }).error(function() {
+                        SweetAlert.swal("Uh Oh", "Something went wrong when trying to make check in this student", "error");
+                        console.warn('There was an error while checking in this ticket')
+                    });
+                } else {
+                    SweetAlert.swal("Cancelled", "The student was not checked in", "error");
+                }
+            });
+
+    };
+    $scope.getStudent = function(name) {
+        return $http.jsonp(APIroot+'/students?callback=JSON_CALLBACK&access_token='+Session.token+'&name='+name+'&hasTicket=true&hasCheckedIn=false').then(function(res) {
+            return res.data
+        })
+    };
+    $scope.findTickets = function(student) {
+        $http.get(APIroot+'/tickets/'+student.ticket).success(function(res) {
+            console.log(res);
+            $scope.checkInQueue.push(res);
+            $scope.checkInForm.student = '';
+            if (res.associated) {
+                $http.get(APIroot+'/tickets/'+res.associated.ticket).success(function(res) {
+                    console.log(res);
+                    $scope.checkInQueue.push(res)
+                    console.log($scope.checkInQueue)
+                }).error(function(res) {
+                    console.warn('Something went wrong');
+                    console.warn(res)
+                })
+            }
+        }).error(function(res) {
+            console.warn('Something went wrong');
+            console.warn(res)
         })
     }
 });
