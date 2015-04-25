@@ -126,5 +126,6 @@ module.exports = function(server) {
     server.del({path: PATH + '/:id', version: '1.0.0'}, deleteTicket);
     server.get({path: PATH + '/:id', version: '1.0.0'}, readOneTicket);
     server.get({path: PATH, version: '1.0.0'}, readAllTickets);
+    server.get({path: PATH + '/:id/checkIn', version: '1.0.0'}, checkIn)
 
 };
