@@ -10,7 +10,8 @@ var ticketSchema = mongoose.Schema({
     student: { type: Schema.Types.ObjectId, ref: 'Student' },
     associated: { type: Schema.Types.ObjectId, ref: 'Student'},
     number: { type: Number, default: 0 },
-    price: { type: Number, default: 40 }
+    price: { type: Number, default: 40 },
+    used: { type: Boolean, default: false }
 });
 
 ticketSchema.pre('save', function(next, done) {

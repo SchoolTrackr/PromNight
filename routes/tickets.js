@@ -110,11 +110,15 @@ function deleteTicket(req, res, next) {
 
 function checkIn(req, res, next) {
     Ticket.findById(req.params.id, function(err, ticket){
-        if (err) {
-            res.status(503, err)
-        } else {
-            res.send(ticket)
-        }
+        if (err) res.status(503, err);
+        Student.findById(ticket.student, function(err, student) {
+            if (err) res.status(503, err);
+            student.hasCheckedIn = true;
+            student.save()
+        });
+        ticket.used = true;
+        ticket.save();
+        res.send(200, ticket)
     })
 
 }
