@@ -58,12 +58,9 @@ var createTicket = function(req, res, next) {
 };
 
 function readOneTicket(req, res, next) {
-    Ticket.findById(req.params.id, function(err, ticket){
-        if (err) {
-            res.status(503, err)
-        } else {
-            res.send(ticket)
-        }
+    Ticket.findOne({_id: req.params.id}).populate('student associated').exec(function(err, ticket) {
+        if (err) res.status(503, err);
+        res.send(ticket)
     })
 }
 
