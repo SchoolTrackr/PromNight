@@ -4,17 +4,18 @@
 var Ticket = require('../models/ticket.js');
 var Student = require('../models/student.js');
 
-//var UpdateAll = function() {
-//    var query = Student.find()
-//    query.exec(function(err, students) {
-//        if (err) console.log(err)
-//        students.forEach(function(student) {
-//            student.hasTicket = false
-//            student.save()
-//            console.log('Saved Student')
-//        })
-//    })
-//}
+var UpdateAll = function() {
+    var query = Student.find()
+    query.exec(function(err, students) {
+        if (err) console.log(err)
+        students.forEach(function(student) {
+            student.hasCheckedIn = false
+            student.save()
+            console.log('Saved Student')
+        })
+    })
+}
+UpdateAll();
 
 function createStudent(req, res, next) {
     student = new Student({
