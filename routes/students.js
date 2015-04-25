@@ -69,7 +69,10 @@ function readAllStudents(req, res, next) {
         }
     }
     if (req.query.grade) query.where({ grade: req.query.grade});
-    if (req.query.hasTicket) query.where({ hasTicket: req.query.hasTicket});
+    if (req.query.hasTicket) query.where({ hasTicket: req.query.hasTicket });
+    if (req.query.hasCheckedIn) query.where({ hasCheckedIn: req.query.hasCheckedIn });
+    if (req.query.isOutside) query.where({ isOutside: req.query.isOutside });
+
     if (req.query.sort) {
         query.sort(req.query.sort)
     }
